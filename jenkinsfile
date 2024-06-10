@@ -2,19 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('install docker') {
             steps {
-                echo 'Building..'
+                sh 'sudo apt update && sudo apt install docker.io -y'
+                sh 'sudo chmod 666 /var/run/docker.sock'
+                sh 'docker build -t ecomm .'
+                echo 'docker installed'
             }
         }
-        stage('Test') {
+        stage('dokcer conatainer run') {
             steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+                sh 'docker run -dt --name ecom -p 100:80 ecomm'
+                echo 'conatainer run'
             }
         }
     }
